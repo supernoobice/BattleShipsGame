@@ -1,5 +1,7 @@
 package com.bootcamp;
 
+import com.sun.xml.internal.ws.api.client.WSPortInfo;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -34,13 +36,15 @@ public class Main {
             if(isGameOver()) {
                 continue;
             }
+
+            System.out.println("COMPUTER'S TURN");
             computerTurn();
             if(isGameOver()) {
                 continue;
             }
             isGameOver();
 
-
+            System.out.println("press ENTER to continue.");
             scanner.nextLine();
 
             map.printMap();
@@ -109,7 +113,7 @@ public class Main {
         int xcoor = new Random().nextInt(9 + 1);
         int ycoor = new Random().nextInt(9 + 1);
 
-        System.out.println("COMPUTER'S TURN");
+
         String item = computer.checkCoordinate(xcoor, ycoor, map).getDisplay();
 
         if(list.contains(item)) {
@@ -131,8 +135,22 @@ public class Main {
         Scanner yplayer = new Scanner(System.in);
         int ycoor = yplayer.nextInt();
 
-        // fire at coordinates of the map
-        player.fire(xcoor, ycoor, computer, map);
+        // Check if the coordinates are out of bounds.
+        // must be within range
+        if(xcoor <= 9 && xcoor >= 0) {
+            if (ycoor <= 9 && ycoor >= 0) {
+                // fire at coordinates of the map
+                player.fire(xcoor, ycoor, computer, map);
+            }
+            else {
+                System.out.println("You are out of range.");
+                playerTurn();
+            }
+        }
+        else {
+            System.out.println("You are out of range.");
+            playerTurn();
+        }
     }
 
     private static void computerPlaceShips() {
@@ -169,15 +187,28 @@ public class Main {
             System.out.print("Enter Y coordinate of your ship: ");
             int ycoor = yplayerInput.nextInt();
 
-            GameObject ship = new GameObject(xcoor, ycoor, "1", "1", "PLAYER");
+            // must be within range
+            if(xcoor <= 9 && xcoor >= 0) {
+                if(ycoor <= 9 && ycoor >= 0) {
+                    GameObject ship = new GameObject(xcoor, ycoor, "1", "1", "PLAYER");
 
-            if (!map.map[xcoor][ycoor].getId().equals("0")) {
-                System.out.println("You can not place a ship there. Try again.");
-            } else {
-                map.place(xcoor, ycoor, ship);
-                shipsPlaced = shipsPlaced - 1;
+                    if (!map.map[xcoor][ycoor].getId().equals("0")) {
+                        System.out.println("You can not place a ship there. Try again.");
+                    } else {
+                        map.place(xcoor, ycoor, ship);
+                        shipsPlaced = shipsPlaced - 1;
+                    }
+                    map.printMap();
+                }
+                else {
+                    System.out.println("You are out of range.");
+                }
             }
-            map.printMap();
+            else {
+                System.out.println("You are out of range.");
+            }
+
+
         }
     }
 }
