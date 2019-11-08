@@ -27,9 +27,13 @@ public class Player {
             this.ships = this.ships - 1;
             ocean.map[x][y] = new GameObject(x, y, "0", "@");
         }
-        else if (id.equals("0")) {
+        else if (id.equals("0") &&
+                (obj.getDisplay().equals("-") || obj.getDisplay().equals(" ")) ) {
             System.out.println(player_name + " missed.");
             ocean.map[x][y].setDisplay("-");
+        }
+        else if(id.equals("0") && !obj.getDisplay().equals("-")) {
+            System.out.println(player_name + " missed.");
         }
         else if(id.equals(enemy.playerID)){
             String display = "!";
@@ -40,6 +44,9 @@ public class Player {
             ocean.map[x][y] = new GameObject(x, y, "0", display);
             enemy.ships = enemy.ships - 1;
         }
+    }
 
+    public GameObject checkCoordinate(int x, int y, OceanMap map) {
+        return map.map[x][y];
     }
 }

@@ -1,5 +1,7 @@
 package com.bootcamp;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -8,6 +10,7 @@ public class Main {
     public static OceanMap map = new OceanMap();
     public static Player player = new Player(5, "1");
     public static Player computer = new Player(5, "2");
+    public static boolean gameOver = false;
 
     public static void main(String[] args) {
 	// write your code here
@@ -16,43 +19,26 @@ public class Main {
 
         // Initialize
         init();
-        boolean gameOver = false;
+
         Scanner scanner = new Scanner(System.in);
 
         // Battle
         while ( !gameOver ) {
-            //map.printMap();
-            if(player.ships <= 0 || computer.ships <= 0) {
-                boolean again = false;
 
-                System.out.print("Player: " + player.ships + " ");
-                System.out.println("Computer: " + computer.ships);
 
-                if(player.ships == 0) {
-                    System.out.println("You lose! Play again?");
-                }
-                if(computer.ships == 0) {
-                    System.out.println("You win! Play again?");
-                }
-
-                Scanner againscan = new Scanner(System.in);
-                String decide = againscan.next();
-                if(decide.equals("y")) {
-                    gameOver = false;
-                    reset();
-                }
-
-                else if(decide.equals("n")) {
-                    gameOver = true;
-                }
-
-            }
             System.out.println("- BATTLE -");
             System.out.print("Player: " + player.ships + " ");
             System.out.println("Computer: " + computer.ships);
 
             playerTurn();
+            if(isGameOver()) {
+                continue;
+            }
             computerTurn();
+            if(isGameOver()) {
+                continue;
+            }
+            isGameOver();
 
 
             scanner.nextLine();
@@ -86,11 +72,53 @@ public class Main {
         computer = new Player(5, "2");;
     }
 
+    private static boolean isGameOver() {
+        // Check if the game condition is over
+        if(player.ships <= 0 || computer.ships <= 0) {
+            boolean again = false;
+
+            System.out.print("Player: " + player.ships + " ");
+            System.out.println("Computer: " + computer.ships);
+
+            if(player.ships == 0) {
+                System.out.println("You lose! Play again?");
+            }
+            if(computer.ships == 0) {
+                System.out.println("You win! Play again?");
+            }
+
+            Scanner againscan = new Scanner(System.in);
+            String decide = againscan.next();
+            if(decide.equals("y")) {
+                gameOver = false;
+                reset();
+            }
+
+            else if(decide.equals("n")) {
+                gameOver = true;
+            }
+
+        }
+        return gameOver;
+    }
+
     private static void computerTurn() {
+        String seen[] = {"-", "@", "x", "!"};
+        List<String> list = Arrays.asList(seen);
+
         int xcoor = new Random().nextInt(9 + 1);
         int ycoor = new Random().nextInt(9 + 1);
-        System.out.println("Computer fired at " + xcoor + ", " + ycoor);
-        computer.fire(xcoor, ycoor, player, map);
+
+        System.out.println("COMPUTER'S TURN");
+        String item = computer.checkCoordinate(xcoor, ycoor, map).getDisplay();
+
+        if(list.contains(item)) {
+            computerTurn();
+        }
+        else {
+            System.out.println("Computer fired at " + xcoor + ", " + ycoor);
+            computer.fire(xcoor, ycoor, player, map);
+        }
     }
 
     private static void playerTurn() {
