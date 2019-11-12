@@ -16,7 +16,6 @@ public class OceanMap {
 
     public void printMap() {
 
-
         for (int x = 0; x < map.length; x++ ) {
             // top HUD
             if(x == 0 || x == map[x].length) {
