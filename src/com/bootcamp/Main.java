@@ -33,17 +33,13 @@ public class Main {
             System.out.println("Computer: " + computer.ships);
 
             playerTurn();
-            if(isGameOver()) {
-                continue;
-            }
+            if(isGameOver()) { continue; }
 
             System.out.println("COMPUTER'S TURN");
             computerTurn();
-            if(isGameOver()) {
-                continue;
-            }
-            isGameOver();
+            if(isGameOver()) { continue; }
 
+            // Stop and pause every round
             System.out.println("press ENTER to continue.");
             scanner.nextLine();
 
@@ -52,21 +48,24 @@ public class Main {
     }
 
     private static void init() {
+
+        // Prepare the map
         map = new OceanMap();
         player.ships = 5;
         computer.ships = 5;
 
+        // show map
         map.printMap();
 
         // Player placing ships
         placeShips();
+        // show map with player ship
         map.printMap();
 
         // Computer places ships
         computerPlaceShips();
         map.printMap();
 
-        // battle
     }
 
     private static void reset() {
@@ -83,6 +82,8 @@ public class Main {
 
             System.out.print("Player: " + player.ships + " ");
             System.out.println("Computer: " + computer.ships);
+
+            map.printMap();
 
             if(player.ships == 0) {
                 System.out.println("You lose! Play again?");
@@ -187,14 +188,16 @@ public class Main {
             System.out.print("Enter Y coordinate of your ship: ");
             int ycoor = yplayerInput.nextInt();
 
-            // must be within range
+            // Must be within range
             if(xcoor <= 9 && xcoor >= 0) {
                 if(ycoor <= 9 && ycoor >= 0) {
                     GameObject ship = new GameObject(xcoor, ycoor, "1", "1", "PLAYER");
 
+                    // Check if the map is already taken
                     if (!map.map[xcoor][ycoor].getId().equals("0")) {
                         System.out.println("You can not place a ship there. Try again.");
                     } else {
+                        // You can place a ship there because its empty
                         map.place(xcoor, ycoor, ship);
                         shipsPlaced = shipsPlaced - 1;
                     }
@@ -207,8 +210,6 @@ public class Main {
             else {
                 System.out.println("You are out of range.");
             }
-
-
         }
     }
 }
