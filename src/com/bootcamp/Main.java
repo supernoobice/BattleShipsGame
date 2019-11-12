@@ -22,11 +22,8 @@ public class Main {
         // Initialize
         init();
 
-        Scanner scanner = new Scanner(System.in);
-
         // Battle
         while ( !gameOver ) {
-
 
             System.out.println("- BATTLE -");
             System.out.print("Player: " + player.ships + " ");
@@ -38,10 +35,6 @@ public class Main {
             System.out.println("COMPUTER'S TURN");
             computerTurn();
             if(isGameOver()) { continue; }
-
-            // Stop and pause every round
-            System.out.println("press ENTER to continue.");
-            scanner.nextLine();
 
             map.printMap();
         }
