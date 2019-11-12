@@ -4,5 +4,6 @@ The battle field is marked in different characters denoting what happened in tha
 ## Output
 ![alt text](screen2.PNG)
 ![alt text](screen.PNG)
+![alt text](screen3.PNG)
 
 by Jeffrey de Lara
